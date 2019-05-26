@@ -1,4 +1,4 @@
-require('modules');
+require('core');
 const _ = require('lodash');
 const { JSDOM } = require('jsdom');
 
