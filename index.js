@@ -1,5 +1,4 @@
 require('core');
-const _ = require('lodash');
 const { JSDOM } = require('jsdom');
 
 class DownDetector {
@@ -21,7 +20,7 @@ class DownDetector {
     .then(body => new JSDOM(body).window.document)
     .then(document => {
       const el = document.querySelector('table');
-      const list = _.values(document.querySelectorAll('table td:nth-child(5) a'));
+      const list = Object.values(document.querySelectorAll('table td:nth-child(5) a'));
       list.length = 3;
       return {
         body: el.innerHTML,
