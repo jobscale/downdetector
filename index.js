@@ -5,10 +5,10 @@ class DownDetector {
   run() {
     const urls = [{
       location: 'jp',
-      url: 'https://downdetector.jp/top10',
+      url: 'https://downdetector.jp',
     }, {
       location: 'com',
-      url: 'https://downdetector.com/top10',
+      url: 'https://downdetector.com',
     }];
     return Promise.all(
       urls.map(url => this.parse(url)),
@@ -19,13 +19,16 @@ class DownDetector {
     .then(res => res.text())
     .then(body => new JSDOM(body).window.document)
     .then(document => {
-      const el = document.querySelector('table');
-      const list = Object.values(document.querySelectorAll('table td:nth-child(5) a'));
+      const list = Object.values(document.querySelectorAll('.companies.thumbnails > div img'));
       list.length = 3;
+      const caption = `${param.location} - ${list.map(el => el.title).join(', ')}`;
+      const el = list[0];
+      const body = el.title;
+      const image = el.dataset.original;
       return {
-        body: el.innerHTML,
-        caption: `${param.location} - ${list.map(cel => cel.textContent.trim()).join(', ')}`,
-        image: el.querySelector('img').src,
+        body,
+        caption,
+        image,
       };
     });
   }
